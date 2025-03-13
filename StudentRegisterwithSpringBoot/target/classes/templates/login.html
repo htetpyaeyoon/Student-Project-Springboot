@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link th:href="@{/css/test.css}" rel="stylesheet">
+    <title>Student Registration</title>
+</head>
+<body class="login-page-body">
+
+<div class="login-page">
+    <div class="form">
+        <div class="login">
+            <div class="login-header">
+                <h1>Welcome!</h1>
+                <!--   <p>Please check your data again.</p> -->
+            </div>
+        </div>
+        <form class="login-form" action="login" method="post" th:action="@{/login}" th:object="${user}" onsubmit="validateForm(event)">
+            <input type="email" th:field="*{email}" id="email" placeholder="Your email"/>
+            <p id="emailError" style="color: red;"></p>
+            <p style="color: red;" th:text="${erroremail}"></p>
+            <input type="password" th:field="*{password}" id="password" placeholder="Password"/>
+            <p id="passError" style="color: red;"></p>
+            <p style="color: red;" th:text="${errorpass}"></p>
+            <button type="submit">login</button>
+            <p class="message">
+                Not registered? <a href="registerform">Create an account</a>
+            </p>
+        </form>
+    </div>
+</div>
+<script th:inline="javascript">
+    function validateForm(event) {
+        event.preventDefault();
+        const emailInput = document.getElementById("email");
+        const passwordInput = document.getElementById("password");
+        let errors = {};
+
+        if (!emailInput.value.trim()) {
+            errors.email = "Email is required";
+        } else if (!isValidEmail(emailInput.value.trim())) {
+            errors.email = "Invalid email format";
+        }
+
+        if (!passwordInput.value.trim()) {
+            errors.pass = "Password is required";
+        }
+        displayErrors(errors);
+
+        if (Object.keys(errors).length === 0) {
+            event.target.submit();
+        }
+    }
+
+    function isValidEmail(email) {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return emailRegex.test(email);
+    }
+
+    function displayErrors(errors) {
+        document.getElementById("emailError").innerText = errors.email || "";
+        document.getElementById("passError").innerText = errors.pass || "";
+    }
+
+    document.getElementById("email").addEventListener("input", function () {
+        document.getElementById("emailError").innerText = "";
+    });
+
+    document.getElementById("password").addEventListener("input", function () {
+        document.getElementById("passError").innerText = "";
+    });
+</script>
+</body>
+</html>

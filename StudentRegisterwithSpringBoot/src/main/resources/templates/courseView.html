@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/header.html}">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Course List</title>
+    <link th:href="@{/css/test.css}" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.0.2/css/dataTables.dataTables.css" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/2.0.2/js/dataTables.js"></script>
+</head>
+<body>
+ <div layout:fragment="content">
+<div class="container">
+    <div class="main_contents">
+        <div id="sub_content">
+            <div class="container col-md-10 offset-md-0">
+            <table class="table table-striped" id="stduentTable">
+                <thead>
+                <tr>
+
+                    <th scope="col">Course ID</th>
+                    <th scope="col">Course Name</th>
+                    <th scope="col">Details</th>
+
+                </tr>
+                </thead>
+                <tbody>
+
+                <tr th:each="course : ${list}">
+                        <td th:text="${course.id}"></td>
+                        <td th:text="${course.course_name}"></td>
+                        <td>
+                            <a class="btn btn-secondary mb-3" th:href="@{'/deletecourse/' + ${course.id}}">Delete</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            </div>
+
+        </div>
+    </div>
+    <script>
+        $(document).ready( function () {
+            $('#stduentTable').DataTable();
+        } );
+    </script>
+</div>
+ </div>
+
+</body>
+</html>

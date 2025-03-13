@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/header.html}">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.0.2/css/dataTables.dataTables.css" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/2.0.2/js/dataTables.js"></script>
+    <title>User List</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="container">
+        <div class="main_contents">
+            <div id="sub_content">
+                <div class="container col-md-10 offset-md-0">
+    <table class="table table-striped" id="studentTable">
+        <thead>
+        <tr>
+            <th scope="col">Student ID</th>
+            <th scope="col">Name</th>
+            <th scope="col">Course Name</th>
+            <th></th>
+            <th scope="col">Details</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="stu : ${list}">
+            <td th:text="${stu.id}"></td>
+            <td th:text="${stu.name}"></td>
+            <td th:text="${stu.course_name}"></td>
+            <td>
+                <img class="rounded-circle me-2" width="60" height="60" th:src="@{${stu.photo}}"/>
+            </td>
+            <td>
+                <a class="btn btn-success mb-3" th:href="@{'/setupstudentUpdate/' + ${stu.id}}">Update</a>
+                <a class="btn btn-success mb-3" th:href="@{'/deletestu/' + ${stu.id}}">Delete</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+            </div>
+                <script>
+                    $(document).ready( function () {
+                        $('#studentTable').DataTable();
+                    } );
+                </script>
+        </div>
+
+</div>
+
+    <div id="testfooter">
+        <span>Copyright &#169; ACE Inspiration 2022</span>
+    </div>
+</body>
+</html>

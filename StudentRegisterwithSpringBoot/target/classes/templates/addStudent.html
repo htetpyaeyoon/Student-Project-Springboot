@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Student Registration</title>
+    <link th:href="@{/css/test.css}" rel="stylesheet">
+    <th:block th:include="~{/header.html :: head}"></th:block>
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="container">
+        <div class="main_contents">
+            <div id="sub_content">
+                <form th:action="@{/addstudent}" method="post" th:object="${stud}" enctype="multipart/form-data" onsubmit="validateForm(event)" >
+
+                    <h2 class="col-md-6 offset-md-2 mb-5 mt-4">Student Registration</h2>
+                    <div class="row mb-4">
+                        <div class="col-md-2"></div>
+                        <label for="name" class="col-md-2 col-form-label">Name</label>
+                        <div class="col-md-4">
+                            <input type="text" class="form-control" th:field="*{name}" id="name" />
+                            <p id="nameError" style="color: red;"></p>
+                        </div>
+                    </div>
+                    <div class="row mb-4">
+                        <div class="col-md-2"></div>
+                        <label for="dob" class="col-md-2 col-form-label">DOB</label>
+                        <div class="col-md-4">
+                            <input type="date" class="form-control" th:field="*{dob}" id="dob" />
+                            <p id="dobError" style="color: red;"></p>
+                        </div>
+                    </div>
+                    <fieldset class="row mb-4">
+                        <div class="col-md-2"></div>
+                        <legend class="col-form-label col-md-2 pt-0">Gender</legend>
+                        <div class="col-md-4">
+                            <div class="form-check-inline">
+                                <input type="radio" class="form-check-input" th:field="*{gender}" id="gender" value="Male" />
+                                <label for="male"> Male </label>
+                            </div>
+                            <div class="form-check-inline">
+                                <input type="radio" class="form-check-input" th:field="*{gender}" id="gender" value="Female" />
+                                <label for="female"> Female </label>
+                            </div>
+                            <p id="genderError" style="color: red;"></p>
+                        </div>
+                    </fieldset>
+
+                    <div class="row mb-4">
+                        <div class="col-md-2"></div>
+                        <label for="phone" class="col-md-2 col-form-label">Phone</label>
+                        <div class="col-md-4">
+                            <input type="text" class="form-control" th:field="*{phone}" id="phone" />
+                            <p id="phoneError" style="color: red;"></p>
+                        </div>
+                    </div>
+
+                    <div class="row mb-4">
+                        <div class="col-md-2"></div>
+                        <label for="education" class="col-md-2 col-form-label">Education</label>
+                        <div class="col-md-4">
+                            <select class="form-select" aria-label="Education" th:field="*{education}" id="education">
+                                <option value="Bachelor of Information Technology">Bachelor of Information Technology</option>
+                                <option value="Diploma in IT">Diploma in IT</option>
+                                <option value="Bachelor of Computer Science">Bachelor of Computer Science</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <fieldset class="row mb-4">
+                        <div class="col-md-2"></div>
+                        <legend class="col-form-label col-md-2 pt-0">Attend</legend>
+                        <div class="col-md-4">
+                            <div class="form-group" th:each="course : ${list}">
+                                <input class="form-check-input" type="checkbox" id="attend"  th:field="*{attend}" th:value="${course.id}">
+                                <label class="form-check-label" th:for="${'attend-' + course.id}" th:text="${course.course_name}"></label>
+                            </div>
+                            <p id="attendError" style="color: red;"></p>
+                        </div>
+                    </fieldset>
+
+
+                    <div class="row mb-4">
+                        <div class="col-md-2"></div>
+                        <label class="col-md-2 col-form-label" th:for="${name}">Photo</label>
+                        <div class="col-md-4">
+                            <input type="file" class="form-control" id="photo" th:field="*{file}" >
+                            <p id="photoError" style="color: red;"></p>
+                        </div>
+                    </div>
+
+
+
+                    <div class="row mb-4">
+                        <div class="col-md-4"></div>
+
+                        <div class="col-md-4">
+                            <button type="reset" class="btn btn-danger ">Reset</button>
+                            <button type="submit" class="btn btn-secondary col-md-2"
+                                     data-bs-target="#exampleModal">Add
+                            </button>
+
+
+                            <!--<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                                 aria-hidden="true">-->
+                               <!-- <div class="modal-dialog modal-dialog-centered">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel">Student Registration</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                    aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <h5 style="color: rgb(127, 209, 131);">Sure Registered?</h5>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="submit" class="btn btn-success col-md-2" data-bs-dismiss="modal">Ok</button>
+
+                                        </div>
+                                    </div>
+                                </div>-->
+                            </div>
+
+                        </div>
+
+
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+</div>
+<script th:inline="javascript">
+    function validateForm(event) {
+        event.preventDefault();
+        const nameInput = document.getElementById("name");
+        const dobInput = document.getElementById("dob");
+        const genderInputs = document.querySelectorAll('input[name="gender"]');
+        const phoneInput = document.getElementById("phone");
+        const attendInputs = document.querySelectorAll('input[name="attend"]');
+      const photoInput = document.getElementById("photo");
+        let errors = {};
+
+        if (!nameInput.value.trim()) {
+            errors.name = "Name is required";
+        }
+
+        if (!dobInput.value.trim()) {
+            errors.dob = "DOB is required";
+        }
+
+        let genderSelected = false;
+        genderInputs.forEach(input => {
+            if (input.checked) {
+                genderSelected = true;
+            }
+        });
+        if (!genderSelected) {
+            errors.gender = "You need to choose gender!";
+        }
+
+        if (!phoneInput.value.trim()) {
+            errors.phone = "Phone number is required";
+        }
+
+        let attendSelected = false;
+        attendInputs.forEach(input => {
+            if (input.checked) {
+                attendSelected = true;
+            }
+        });
+        if (!attendSelected) {
+            errors.attend = "You need to choose attend";
+        }
+
+
+         if (!photoInput.value.trim()) {
+            errors.photo = "You need to upload photo";
+        }
+
+        displayErrors(errors);
+
+        if (Object.keys(errors).length === 0) {
+            event.target.submit();
+        }
+    }
+
+    function displayErrors(errors) {
+        document.getElementById("nameError").innerText = errors.name || "";
+        document.getElementById("dobError").innerText = errors.dob || "";
+        document.getElementById("genderError").innerText = errors.gender || "";
+        document.getElementById("phoneError").innerText = errors.phone || "";
+        document.getElementById("attendError").innerText=errors.attend||"";
+        document.getElementById("photoError").innerText=errors.photo||"";
+    }
+
+    document.getElementById("name").addEventListener("input", function() {
+        document.getElementById("nameError").innerText = "";
+    });
+
+    document.getElementById("dob").addEventListener("input", function() {
+        document.getElementById("dobError").innerText = "";
+    });
+
+    document.querySelectorAll('input[name="gender"]').forEach(function(input) {
+        input.addEventListener("change", function() {
+            document.getElementById("genderError").innerText = "";
+        });
+    });
+
+    document.getElementById("phone").addEventListener("input", function() {
+        document.getElementById("phoneError").innerText = "";
+    });
+
+   document.querySelectorAll('input[id="attend"]').forEach(function(input) {
+        input.addEventListener("change", function() {
+            document.getElementById("attendError").innerText = "";
+        });
+    });
+
+    document.getElementById("photo").addEventListener("input", function() {
+        document.getElementById("photoError").innerText = "";
+    });
+
+</script>
+<th:block th:include="~{/header.html :: body}"></th:block>
+</body>
+</html>

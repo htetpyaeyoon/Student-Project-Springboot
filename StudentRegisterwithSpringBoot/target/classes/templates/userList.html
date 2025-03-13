@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/header.html}">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.0.2/css/dataTables.dataTables.css" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/2.0.2/js/dataTables.js"></script>
+    <title>User List</title>
+</head>
+<body>
+<div layout:fragment="content">
+    <div class="container">
+        <div class="main_contents">
+            <div id="sub_content">
+                <p th:style="'color: red;'" th:text="${errorDelete}"></p>
+
+                <div class="col-auto">
+                    <button type="button" class="btn btn-secondary mb-3 "
+                            onclick="location.href = '/StudentRegisterwithSpringBoot/adduserform';">Add</button>
+                    <a th:href="@{/ExportServlet/excel}" class="btn btn-info mb-3">Excel</a>
+                    <a th:href="@{/ExportServlet/pdf}" class="btn btn-success mb-3">PDF</a>
+                </div>
+                <div class="container col-md-10 offset-md-0">
+                    <table class="display" id="stduentTable">
+
+                        <thead>
+                        <tr>
+                            <th scope="col">User ID</th>
+                            <th scope="col">User Name</th>
+                            <th scope="col">User Role</th>
+                            <th scope="col">Details</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="user : ${list}">
+                            <td th:text="${user.id}"></td>
+                            <td th:text="${user.name}"></td>
+                            <td th:text="${user.role}"></td>
+                            <td>
+                                <a class="btn btn-success mb-3" th:href="@{'/setupUpdate/' + ${user.id}}">Update</a>
+                                <a class="btn btn-secondary mb-3" th:href="@{'/deleteuser/' + ${user.id}}">Delete</a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Student Deletion</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+
+                                    <h5 style="color: rgb(127, 209, 131);">Are you sure want to delete !</h5>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-success col-md-2" data-bs-dismiss="modal">Ok</button>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script>
+            $(document).ready( function () {
+                $('#stduentTable').DataTable();
+            } );
+        </script>
+
+    </div>
+</div>
+<div id="testfooter">
+    <span>Copyright &#169; ACE Inspiration 2022</span>
+</div>
+</body>
+</html>
