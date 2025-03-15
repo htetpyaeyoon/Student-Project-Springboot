@@ -7,13 +7,6 @@ import jakarta.servlet.ServletContext;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import net.sf.jasperreports.engine.*;
-import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
-import net.sf.jasperreports.engine.export.JRPdfExporter;
-import net.sf.jasperreports.engine.export.JRXlsExporter;
-import net.sf.jasperreports.export.SimpleExporterInput;
-import net.sf.jasperreports.export.SimpleOutputStreamExporterOutput;
-import net.sf.jasperreports.export.SimpleXlsxReportConfiguration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -25,8 +18,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.io.IOException;
-import java.util.*;
+import java.util.List;
+import java.util.Optional;
 
 @Controller
 public class RegisterController {
@@ -55,8 +48,12 @@ public class RegisterController {
     }
 
     @GetMapping("/StudentRegisterwithSpringBoot/logout")
-    public ModelAndView logout() {
-        return new ModelAndView("login", "user", new UserBean());
+    public String logout(HttpServletRequest request, HttpServletResponse response) {
+        HttpSession session = request.getSession(false);
+        if (session != null) {
+            session.invalidate(); // Invalidate session
+        }
+        return "redirect:/"; // Redirect to login page
     }
 
 
@@ -159,7 +156,14 @@ public class RegisterController {
         return "redirect:/StudentRegisterwithSpringBoot/userlist";
     }
 
-    @GetMapping("/ExportServlet/{export}")
+    @GetMapping("/StudentRegisterwithSpringBoot/userprofile/{userId}")
+    public String userProfile(@PathVariable("userId") String userId, ModelMap m) {
+        Optional<UserBean> list = userservice.selectById(userId);
+        m.addAttribute("list", list.orElse(null));
+        System.out.println(list.get().getName());
+        return "userProfile";
+    }
+    /*@GetMapping("/ExportServlet/{export}")
     public void generateReport(HttpServletRequest request, HttpServletResponse response,
                                @PathVariable("export") String export) throws IOException {
         String path = servletContext.getRealPath("/WEB-INF/jasper/user.jrxml");
@@ -212,5 +216,5 @@ public class RegisterController {
         } catch (JRException e) {
             e.printStackTrace();
         }
-    }
+    }*/
 }

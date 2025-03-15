@@ -74,7 +74,8 @@
         <a th:href="@{/StudentRegisterwithSpringBoot/Student}">Student Registration</a>
         <!-- <a th:href="@{/StudentRegistrationwithSpringMVC/studentProfile/${studentId}">Student Profile</a> -->
     </div>
-    <a th:href="@{/StudentRegisterwithSpringBoot/userprofile/{userId}(userId=${userId})}">Account Profile</a>
+    <!--<a th:href="@{/StudentRegisterwithSpringBoot/userprofile/{userId}(userId=${userId})}">Account Profile</a>-->
+    <a th:href="@{'/StudentRegisterwithSpringBoot/userprofile/'+ ${session.userId}}">Account Profile</a>
 </div>
 <!--sideBar -->
 <!--main-->

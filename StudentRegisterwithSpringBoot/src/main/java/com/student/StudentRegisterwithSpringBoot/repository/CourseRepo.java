@@ -11,5 +11,4 @@ public interface CourseRepo extends JpaRepository<CourseBean,String> {
 
     @Query("SELECT c FROM CourseBean c WHERE c.course_name = :course_name")
     CourseBean findByCourseName(@Param("course_name") String courseName);
-
 }

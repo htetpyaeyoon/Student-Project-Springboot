@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class CourseService {
@@ -30,13 +32,18 @@ public class CourseService {
         }
     }
 
-   /* public void deleteCourse(String id){
-        courserepo.deleteById(id);
-    }*/
+    public void softDeleteCourse(String id) {
+        Optional<CourseBean> courseOptional = courserepo.findById(id);
+        courseOptional.ifPresent(course -> {
+            course.setDeleted(true); // Set deleted flag to true
+            courserepo.save(course);
+        });
+    }
 
     public List<CourseBean> selectAll(){
-        List<CourseBean> list=courserepo.findAll();
-        return list;
+        return courserepo.findAll().stream()
+                .filter(course -> course.getDeleted() == null || !course.getDeleted())
+                .collect(Collectors.toList());
     }
 
     public CourseBean selectOne(String id){

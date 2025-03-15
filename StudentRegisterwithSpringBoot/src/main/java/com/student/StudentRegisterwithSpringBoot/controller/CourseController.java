@@ -7,10 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
@@ -51,5 +48,12 @@ public class CourseController {
         List<CourseBean> list = couService.selectAll();
         m.addAttribute("list",list);
         return "courseView";
+    }
+
+    @GetMapping("/deletecourse/{id}")
+    public String deleteCourse(@PathVariable("id") String id) {
+        // Soft delete the student by updating the 'deleted' flag
+        couService.softDeleteCourse(id);
+        return "redirect:/StudentRegisterwithSpringBoot/courselist";
     }
 }

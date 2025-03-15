@@ -15,6 +15,17 @@ public class CourseBean {
     @Column(length = 45,nullable = false, name = "course_name")
     private String course_name;
 
+    @Column(name = "deleted") // Map to a column named 'deleted' in the database
+    private Boolean deleted;
+
+    public Boolean getDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(Boolean deleted) {
+        this.deleted = deleted;
+    }
+
     public String getId() {
         return id;
     }
